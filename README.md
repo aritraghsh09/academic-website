@@ -1,11 +1,10 @@
 This is a custom implementation of Massively from HTML5Up.
 
-I use this as my academic website. 
+I use this as my academic website -- http://www.ghosharitra.com/
 
 The original readme for HTMLUp Massively is included below.
 
-
-########################################################################################
+***
 
 Massively by HTML5 UP
 html5up.net | @ajlkn
