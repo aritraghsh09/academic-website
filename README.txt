@@ -1,3 +1,12 @@
+This is a custom implementation of Massively from HTML5Up.
+
+I use this as my academic website. 
+
+The original readme for HTMLUp Massively is included below.
+
+
+########################################################################################
+
 Massively by HTML5 UP
 html5up.net | @ajlkn
 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
