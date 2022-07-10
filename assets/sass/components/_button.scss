@@ -32,6 +32,8 @@
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 
 		&.icon {
 			&:before {

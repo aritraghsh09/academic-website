@@ -2089,6 +2089,8 @@ input, select, textarea {
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 		input[type="submit"].icon:before,
@@ -2705,6 +2707,10 @@ input, select, textarea {
 
 			ul.actions.special li:first-child {
 				padding-left: 0;
+			}
+
+			ul.actions.special.wrap{
+				flex-wrap: wrap;
 			}
 
 		ul.actions.stacked {
