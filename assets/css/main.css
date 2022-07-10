@@ -2710,7 +2710,7 @@ input, select, textarea {
 			}
 
 			ul.actions.special.wrap{
-				flex-wrap: wrap;
+				flex-wrap: wrap;	
 			}
 
 		ul.actions.stacked {
