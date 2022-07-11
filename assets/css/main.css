@@ -15,7 +15,7 @@ small, strike, strong, sub, sup, tt, var, b,
 u, i, center, dl, dt, dd, ol, ul, li, fieldset,
 form, label, legend, table, caption, tbody,
 tfoot, thead, tr, th, td, article, aside,
-canvas, details, embed, figure, figcaption,
+canvas, details, embed, figure, figcaption, figattr,
 footer, header, hgroup, menu, nav, output, ruby,
 section, summary, time, mark, audio, video {
 	margin: 0;
@@ -25,7 +25,7 @@ section, summary, time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;}
 
-article, aside, details, figcaption, figure,
+article, aside, details, figcaption, figattr, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;}
 
@@ -116,7 +116,7 @@ input, select, textarea {
 /* Type */
 
 	html {
-		font-size: 16pt;
+		font-size: 14pt;
 	}
 
 		@media screen and (max-width: 1680px) {
@@ -320,6 +320,11 @@ input, select, textarea {
 
 	hr {
 		border-bottom-color: #eeeeee;
+	}
+
+	figattr {
+		font-size: 0.75rem;
+		font-style: italic;
 	}
 
 /* Row */
@@ -3789,7 +3794,7 @@ input, select, textarea {
 		}
 
 		#main > .post {
-			padding: 8rem 8rem 6rem 8rem ;
+			padding: 3rem 6rem 4rem 6rem ;
 		}
 
 			#main > .post header.major > .date {
@@ -3809,7 +3814,7 @@ input, select, textarea {
 			@media screen and (max-width: 1280px) {
 
 				#main > .post {
-					padding: 6rem 4rem 4rem 4rem ;
+					padding: 3rem 4rem 4rem 4rem ;
 				}
 
 			}
