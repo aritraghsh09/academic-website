@@ -325,7 +325,9 @@ input, select, textarea {
 	figattr {
 		font-size: 0.75rem;
 		font-style: italic;
+		text-align: left;
 	}
+
 
 /* Row */
 
@@ -2657,10 +2659,15 @@ input, select, textarea {
 
 			.image.fit {
 				margin: 2rem 0;
+				min-width: 90%;
 			}
 
 			.image.main {
 				margin: 2rem 0;
+			}
+
+			.image.left, .image.right {
+				min-width: 50%;
 			}
 
 		}
@@ -2956,7 +2963,7 @@ input, select, textarea {
 		}
 
 		header.major {
-			margin: -4rem 0 2rem 0;
+			margin: 0 0 2rem 0;
 			text-align: center;
 		}
 
@@ -3801,10 +3808,22 @@ input, select, textarea {
 				margin-top: -2rem;
 			}
 
-			#main > .post header.major > h1, #main > .post header.major h2 {
+			#main > .post header.major > h1 {
 				font-size: 4rem;
 				line-height: 1.1;
 				margin: 0 0 2rem 0;
+			}
+
+			#main > .post header.major h2 {
+				font-size: 2.15rem;
+				line-height: 1.1;
+				margin: 0 0 1.5rem 0;	
+			}
+
+			#main > .post header.major h3 {
+				font-size: 1.75rem;
+				line-height: 0.75;
+				margin: 0 0 1rem 0;	
 			}
 
 			#main > .post.featured {
@@ -3830,10 +3849,22 @@ input, select, textarea {
 						margin-bottom: 2rem;
 					}
 
-					#main > .post header.major > h1, #main > .post header.major h2 {
+					#main > .post header.major > h1 {
 						font-size: 2.5rem;
 						line-height: 1.2;
 						margin: 0 0 1.5rem 0;
+					}
+
+					#main > .post header.major h2 {
+						font-size: 1.85rem;
+						line-height: 1.2;
+						margin: 0 0 1.5rem 0;	
+					}
+
+					#main > .post header.major h3 {
+						font-size: 1.25rem;
+						line-height: 0.5;
+						margin: 0 0 1rem 0;	
 					}
 
 			}
