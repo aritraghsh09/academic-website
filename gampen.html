@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>GaMPEN | Galaxy Morphology Posterior Estimation Network</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="description" />
+        <meta name="keywords" content="keyword1,keyword2" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		
+        <!-- ACTIVATING MATHJAX TO WRITE LATEX   -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+        <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<a href="index.html" class="logo">Aritra | &#x0985;&#x09B0;&#x09BF;&#x09A4;&#x09CD;&#x09B0;&nbsp;</a>
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul class="links">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="about_me.html">About Me</a></li>
+							<li><a href="research.html">Research</a></li>
+							<li><a href="teaching.html">Teaching &amp Mentoring</a></li>
+							<li><a href="outreach.html">Outreach</a></li>
+							<li><a href="advocacy.html">Advocacy</a></li>	
+							<li><a href="cv.html">CV</a></li>			
+						</ul>
+						<ul class="icons">
+							<li><a href="mailto:aritraghsh09@gmail.com" target="_blank" class="icon fa-envelope"><span class="label">Email</span></a></li>
+							<li><a href="https://github.com/aritraghsh09" target="_blank"  class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://twitter.com/aritraghsh09" target="_blank" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+							<li><a href="https://www.linkedin.com/in/aritra-ghosh-169ba582" target="_blank" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+						</ul>
+					</nav>
+
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+
+								<header class="major">
+									<h1 style="text-transform: none;">GaMPEN</h1>
+
+									<span class="image fit" style="max-width: 90%;
+									display: block;
+ 									margin-left: auto;
+  									margin-right: auto;">
+									<img src="images/research/gampen_intro.png" alt="Schematic Diagram showing
+									the basic inner working of GaMPEN. It takes an input image to first crop
+									it and then estimate posterior distributions of different morphological 
+									parameters"/></span>
+
+
+									<h3>Galaxy Morphology Posterior Estimation Network</h3>
+									<p>The first ML framework for automatic cropping &amp; estimating posteriors of different galaxy
+										morphological parameters</p>
+
+									<ul class="actions special wrap">
+										<li><a href="#" class="button primary small" 
+											target="_blank">ArXiv</i></a></li>
+										<li><a href="#" 
+											class="button small" target="_blank">ApJ <i class="fas fa-spinner fa-pulse fa-1.2x"></i></a></li>
+										<li><a href="#data_release" class="button primary small more scrolly" target="_blank">Source Code</a></li> 
+										<li><a href="#data_release" class="button primary small more scrolly" target="_blank">Docs. & Tutorials</a></li> 
+									</ul>
+							
+								</header>
+
+								<hr />
+
+								<h3>What does GaMPEN do & Why was it needed?</h3>
+								<p>
+									Although Convolutional Neural Networks (CNNs) have used for galaxy morphology determination
+									for quite some time now, a few challenges associated with the process has persisted. From the
+									early attempts at using a CNN to classify galaxies morphologically to the largest ML-produced
+									morphological catalogs currently available, <b><em>most CNNs have provided broad morphological
+									classifications.</em></b> There has been very limited work on estimating morphological parameters
+									using CNNs; and <em><b>there has been no work on estimating robust uncertainties of CNN determined
+									morphological parameters. Even popular non-ML tools like Galfit severely underestimate uncertainties
+									by values as high as $\sim75\%$</b></em>. Meanwhile, the computation of full Bayesian posteriors for
+									different morphological parameters is crucial for drawing scientific inferences that account for 
+									uncertainty and thus are indispensable in the derivation of robust scaling relations or tests of 
+									theoretical models using morphology.</p>
+
+								<p> One other challenge of using CNNs in astronomy, is the necessity ot use fixed 
+									cutout sizes. Most previous work has resorted to selecting a large cutout size for which "most galaxies"
+									would remain in the frame. However, this means that for many galaxies in the dataset, especially smaller 
+									ones, typical cutouts contain other galaxies in the frame, often leading to less accurate results. <b><em>
+									Thus, this becomes a problem when applying CNNs to galaxies over a wide magnitude and redshift range.</em></b>
+								</p>
+
+								<p>In order to address both these challenges, we developed GaMPEN.
+
+									<b>
+									<ul>
+										<li>GaMPEN automatically crops input images to an optimal size before determining
+										their morphology.</li>
+										<li>GaMPEN estimates Bayesian posterior distributions for a galaxy's bulge-to-total
+										light ratio ($L_B/L_T$), radius($R_e$), and flux. (It can be easily adapted to
+										predict other parameters).</li>
+										<li>GaMPEN takes into account both aleatoric &amp; epistemic uncertainties</li>
+										<li>GaMPEN's produced uncertainties/posteriors are extremely well-calibrated and 
+										accurate. ($\lesssim 5\%$ derivation)</li>
+										<li>GaMPEN incorporates the full covariance matrix in its loss function allowing it to 
+										achieve well-calibrated uncertainties for all three variables simultaneously.</li>
+									</ul>
+									</b>
+								</p>
+
+								<hr />
+
+								<h3 id="data_release">Data & Code Release</h3>
+
+								<p>GaMPEN's source code along with extensive tutorials and trained models will be released 
+								   in the Fall of 2022. Come back here at that time to access all the data release resources!
+								   You can fill up this short <a href="https://forms.gle/rpfnDwnZw3WwETA89" target="_blank">
+								   Google Form</a> to indicate your 
+								   interest and I will notify you once the public release takes place!
+								</p>
+
+								<p>However, if you have a project where you want to apply GaMPEN before that, please send an
+								email to <code>aritra.ghosh (at) yale.edu</code> and <code>aritraghsh09  (at) 
+								gmail.com</code>. However, please note that we have only limited documentation available 
+								as of now!
+								</p>
+								
+								
+							</section>
+
+					</div>
+
+
+				<!-- Copyright -->
+				<div id="copyright">
+					<ul><li>&copy; Aritra Ghosh</li><li>Design: Based on Massively from <a href="https://html5up.net"
+						 target="_blank">HTML5 UP</a></li><li>Background Image: <a href="https://apod.nasa.gov/apod/ap180506.html" target="_blank">Dave Lane</a></li><li><a href="https://github.com/aritraghsh09/academic-website" 
+						 target="_blank">Website Source Code</a></li></ul>
+				</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
