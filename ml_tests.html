@@ -109,9 +109,16 @@
 										</ul>
 								</p>
 
+								<ul class="actions special wrap">
+									<li><a href="#rot_trans" class="button more scrolly small">Stability Under Rotations</a></li>
+									<li><a href="#real_data" class="button more scrolly small">Training with Minimal Real Data</a></li>
+									<li><a href="#surveys" class="button more scrolly small">Applicability Across Surveys</a></li>
+									<li><a href="#viz" class="button more scrolly small">Investigating ML Decision Making</a></li>
+								</ul>
+
 								<hr />
 
-								<h3>Prediction Stability Against Rotational Transformations</h3>
+								<h3 id="rot_trans">Prediction Stability Against Rotational Transformations</h3>
 
 								<span class="image fit" style="max-width: 75%;
 									display: block;
@@ -162,7 +169,7 @@
 
 								<hr />
 
-								<h3>Training ML Algorithms Without Vast Amounts of Real Data</h3>
+								<h3 id="real_data">Training ML Algorithms Without Vast Amounts of Real Data</h3>
 
 								<p>
 									<span class="image left" style="max-width: 20%;"><img src="images/misc/chicken_egg.png" 
@@ -210,7 +217,7 @@
 
 								<hr />
 
-								<h3>Applicability Across Surveys/Redshfits</h3>
+								<h3 id="surveys">Applicability Across Surveys/Redshfits</h3>
 
 								<p><span class="image fit" style="max-width: 75%;
 									display: block;
@@ -268,7 +275,7 @@
 
 								<hr />
 
-								<h3>Investigating ML decision making processes</h3>
+								<h3 id="viz">Investigating ML decision making processes</h3>
 
 								<p>It is often said that deep-learning models are "black-boxes" learning
 								   features that are difficult to understand. Although this might be true
@@ -339,7 +346,7 @@
 								</p>
 
 								<h4>Visualizing Filter Patterns</h4>
-
+								<p>
 								<span class="image fit" style="max-width: 75%;
 									display: block;
  									margin-left: auto;
@@ -352,6 +359,28 @@
 									</figattr>
 									</span>
 
+									One more way to inspect the filters learned by CNNs is to display the visual
+									pattern that each filter in the convolutional layers is meant to respond to. 
+									This can be done with gradient ascent in the input space -- applying gradient 
+									descent to the value of the input image of a CNN so as to maximize the response 
+									of a specific filter, starting from a blank input image. The resulting input image 
+									will be one that the chosen filter is maximally responsive to.
+								</p>
+
+								<p> We apply this technique to GaMorNet and the different patters that the filters are 
+									most responsive to are shown at different depths within the network (the leftmost 
+									set of images is from the shallowest layer; and the rightmost set of images is from
+									the deepest layer). As is clear from these images -- shallower layers in the network
+									detect simple features in the input image such as edges and lines. As the network gets
+									progressively deeper, the network deals with higher level more complicated features. As
+									can be seen from the second-from-the-eight image, after detecting lines edges, GaMorNet
+									starts to focus on elliptical/circular patters -- galaxies! And in the last set of images,
+									it can be seen that GaMorNet is looking for sub-features within galaxies, such as spiral
+									arms! <em><b>The fact that it's only the deeper layers which learn the most complicated features,
+									is what allows us to achieve good performance by fine-tuning only the last few layers of 
+									our CNNs.
+									</b></em>
+								</p>
 
 
 
