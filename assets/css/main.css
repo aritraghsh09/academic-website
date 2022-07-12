@@ -3822,7 +3822,7 @@ input, select, textarea {
 
 			#main > .post header.major h3 {
 				font-size: 1.75rem;
-				line-height: 0.75;
+				line-height: 1.1;
 				margin: 0 0 1rem 0;	
 			}
 
@@ -3863,7 +3863,7 @@ input, select, textarea {
 
 					#main > .post header.major h3 {
 						font-size: 1.25rem;
-						line-height: 0.5;
+						line-height: 1.1;
 						margin: 0 0 1rem 0;	
 					}
 
