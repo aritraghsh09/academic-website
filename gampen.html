@@ -79,7 +79,7 @@
 										morphological parameters</p>
 
 									<ul class="actions special wrap">
-										<li><a href="#" class="button primary small" 
+										<li><a href="https://arxiv.org/abs/2207.05107" class="button primary small" 
 											target="_blank">ArXiv</i></a></li>
 										<li><a href="#" 
 											class="button small" target="_blank">ApJ <i class="fas fa-spinner fa-pulse fa-1.2x"></i></a></li>
@@ -114,20 +114,237 @@
 
 								<p>In order to address both these challenges, we developed GaMPEN.
 
-									<b>
+									
 									<ul>
-										<li>GaMPEN automatically crops input images to an optimal size before determining
-										their morphology.</li>
-										<li>GaMPEN estimates Bayesian posterior distributions for a galaxy's bulge-to-total
+										<li><b>GaMPEN automatically crops input images to an optimal size before determining
+										their morphology.</b></li>
+										<li><b>GaMPEN estimates Bayesian posterior distributions for a galaxy's bulge-to-total
 										light ratio ($L_B/L_T$), radius($R_e$), and flux. (It can be easily adapted to
-										predict other parameters).</li>
+										predict other parameters).</li></b>
 										<li>GaMPEN takes into account both aleatoric &amp; epistemic uncertainties</li>
 										<li>GaMPEN's produced uncertainties/posteriors are extremely well-calibrated and 
 										accurate. ($\lesssim 5\%$ derivation)</li>
 										<li>GaMPEN incorporates the full covariance matrix in its loss function allowing it to 
 										achieve well-calibrated uncertainties for all three variables simultaneously.</li>
 									</ul>
-									</b>
+
+									<b><em>GaMPEN is the first machine learning framework for determining joint posterior 
+										distributions of multiple morphological parameters and is also the first 
+										application of an STN to optical imaging in astronomy.</em></b>
+								</p>
+
+								<hr />
+
+								<h3 id="architecture">GaMPEN's Architecture</h3>
+
+								<p>
+									<span class="image fit" style="max-width: 80%;
+									display: block;
+ 									margin-left: auto;
+  									margin-right: auto;">
+									<img src="images/research/gampen/gampen_schematic.png" alt="Image showing
+									a schematic diagram of GaMPEN's architecture"/>
+										<figattr>GaMPEN consists of an upstream Spatial Transformer Network (STN)
+										followed by a downstream Convolutional Neural Network (CNN)
+										</figattr>
+									</span>
+
+									GaMPEN's architecture consists of two separate entities:- a) an upstream 
+									Spatial Transformer Network (STN) which enables GaMPEN to automatically crop
+									galaxies to an optimal size; b) a downstream Convolutional Neural Network (CNN)
+									which enables GaMPEN to predict posterior distributions for various morphological
+									parameters.
+								</p>
+
+								<p>GaMPEN's design is based on our previously successful classification CNN, 
+								   <a href="gamornet.html">GaMorNet</a>, as well as as different variants of the 
+								   Oxford Visual Geometry Group networks. We tried a variety of different architectures
+								   before finally converging on this design.
+								</p>
+
+								<hr />
+
+								<h3 id="cropping">How does GaMPEN automatically crop galaxies?</h3>
+							
+								<span class="image fit" style="max-width: 70%;
+									display: block;
+ 									margin-left: auto;
+  									margin-right: auto;">
+									<img src="images/research/gampen/stn_examples.png" alt="Image showing
+									the STN crops applied to six randomly chosen simulated galaxies"/>
+									<figattr>Examples of the transformation applied by the STN to six randomly 
+										selected simulated galaxy images.</figattr>
+								</span>
+
+								<p>In GaMPEN, the STN is upstream of the CNN, where it applies a two-dimensional affine 
+									transformation to the input image. <em>Each input image is transformed differently by the STN, 
+									which learns the appropriate cropping during the training of the downstream CNN without 
+									additional supervision.</em></p>
+
+								<p>To perform the transformation the STN predicts the six-parameter matrix of the affine transformation
+									$A_{\theta}$ to be applied to the input image.
+
+									$$ 
+									\left(\begin{array}{c}
+									x_{i}^{s} \\
+									y_{i}^{s}
+									\end{array}\right) = A_{\theta}\left(\begin{array}{c}
+									x_{i}^{t} \\
+									y_{i}^{t} \\
+									1
+									\end{array}\right) 
+									= \left[\begin{array}{lll}
+									\theta_{11} & \theta_{12} & \theta_{13} \\
+									\theta_{21} & \theta_{22} & \theta_{23}
+									\end{array}\right]\left(\begin{array}{c}
+									x_{i}^{t} \\
+									y_{i}^{t} \\
+									1
+									\end{array}\right)
+									$$
+
+									where $ \left(x_i^s,y_i^s\right)$ and $ \left( x_i^t, y_i^t \right) $ are the source and target 
+									co-ordinates respectively. As the network trains, the predicted transformation alters slowly based
+									on the loss function.
+								</p>
+
+								<p>
+
+									<span class="image left" style="max-width: 35%;"><img 
+										src="images/research/gampen/stn_examples_real_data.png" 
+										alt="Image showing the performance of the STN on three galaxies 
+										from the Hyper Suprime-Cam Wide Survey."/>
+										<figattr> Examples of the transformation applied by the STN to three randomly 
+											selected $z < 0.25 $ galaxies in the Hyper Suprime-Cam Wide Survey
+										</figattr>
+									</span>
+
+									<em>Placing the STN upstream in the GaMPEN framework allows the network to learn how to 
+									actively transform the input image in such a way that minimizes the overall loss 
+									function (i.e., the predicted transformation is guided by and helps the downstream 
+									morphological parameter estimation).</em> Because the transformation we use is differentiable with respect to the parameters, 
+									gradients can be backpropagated to the predicted parameters $A_{\theta}$. 
+									<em>This crucial property allows the STN to be trained using standard backpropagation 
+									along with the downstream CNN, without any additional supervision.</em>
+								</p>
+
+								<p>The primary benefit of using an STN is that:- <b><em>without any additional training needed, 
+									the STN learns to systematically crop out secondary galaxies in the cutouts and focus on 
+									the galaxy of interest at the center of the cutout.</b></em></p>
+
+								<hr />
+
+								<h3 id="rot_trans">Prediction Stability Against Rotational Transformations</h3>
+
+								<span class="image fit" style="max-width: 75%;
+									display: block;
+ 									margin-left: auto;
+  									margin-right: auto;">
+									<img src="images/research/real_data_gampen_video_high_res.gif" 
+									alt="Video showing how stable predictions by our neural network
+									GaMPEN are against rotations."/>
+									<figattr>This video is optimized for fast loading. For a higher resolution version,
+										watch it on <a href="https://youtu.be/Oj3QXqZ19-4" target="_blank">YouTube</a>
+									</figattr>
+								</span>
+
+								<p>Although CNNs learn to recognize features that are 
+								   invariant under translation -- the learned features are typically not rotationally
+								   invariant. However, this is a problem if CNNs are to be used in astronomy -- especially,
+								   for determining the morphology of galaxies. A CNN should be able to identify the same 
+								   galaxy at two different orientations and return the same values. <em>But is this true?
+								   To what level are the predictions stable? </em>
+								</p>
+
+								<p>The above video shows the stability of predictions by GaMPEN when an input galaxy image
+								   is rotated through various angles. GaMPEN's predictions of all three 
+								   output parameters -- bulge-to-total light ratio ($L_B/L_T$), effective radius ($R_e$),
+								   and flux -- are stable against rotations.The modes of the predicted values deviate by
+								   $\lesssim 5\%$. <b><em>This importantly shows to what level the predictions are stable 
+								   against rotations.
+								   </em></b>
+								</p> 
+
+								<hr/>
+
+								<h3 id="uncertainties">Posterior Estimation/Uncertainty Prediction</h3>
+
+								<p>
+								<span class="image fit" style="max-width: 75%;
+									display: block;
+ 									margin-left: auto;
+  									margin-right: auto;">
+									<img src="images/research/gampen/workflow_gampen.png" 
+									alt="Diagram showing how uncertainties are predicted by GaMPEN"/>
+									<figattr>Workflow diagram demonstrating how GaMPEN estimates posterior distributions</figattr>
+								</span>
+
+								To create a Bayesian framework while predicting morphological parameters, we have to treat the model 
+								itself as a random variable---or more precisely, the weights of our network $\boldsymbol{\omega}$, 
+								must be probabilistic distributions instead of single deterministic values. For a network with 
+								weights, $\boldsymbol{\omega}$, and a training dataset, $\mathcal{D}$, of size $N$ with input 
+								images $\left\{\boldsymbol{X}_{1}, \ldots, \boldsymbol{X}_{N}\right\}$ and output parameters 
+								$\left\{\boldsymbol{Y}_{1}, \ldots, \boldsymbol{Y}_{N}\right\}$, the posterior of the network weights, 
+								$p(\boldsymbol{\omega} \mid \mathcal{D}) $ represents the plausible network parameters. To predict the 
+								probability distribution of the output variable $\boldsymbol{\hat{Y}}$ given a new test 
+								image $\boldsymbol{\hat{X}}$, we need to marginalize over all possible weights $\boldsymbol{\omega}$:
+
+								$$
+								p(\boldsymbol{\hat{Y}} \mid \boldsymbol{\hat{X}}, \mathcal{D})=\int p(\boldsymbol{\hat{Y}} \mid \boldsymbol{\hat{X}}, \boldsymbol{\omega}) p(\boldsymbol{\omega} \mid \mathcal{D}) d \boldsymbol{\omega} .
+								$$
+
+								Using variational inference and dropout, we can approximate the integral in as 
+
+								$$
+								\int p(\boldsymbol{\hat{Y}} \mid \boldsymbol{\hat{X}}, \boldsymbol{\omega}) p(\boldsymbol{\omega} \mid \mathcal{D}) d \boldsymbol{\omega} \approx \frac{1}{T} \sum_{t=1}^{T} p(\boldsymbol{\hat{Y}} \mid \boldsymbol{\hat{X}}, \boldsymbol{\omega}_t) ,
+								$$
+
+								wherein we perform $T$ forward passes with dropout enabled and $\boldsymbol{\omega}_t$ is the 
+								set of weights during the $t^{th}$ forward pass. This procedure is what is referred to as 
+								Monte Carlo Dropout. <em><b>However, only performing Monte Carlo dropout is not enough!</b></em>
+								</p>
+
+								<p>Our training data consists of noisy input images by design, but we know the corresponding morphological 
+									parameters with perfect accuracy. However, due to the different amounts of noise in each image, the 
+									predictions of GaMPEN at test time should have different levels of uncertainties. Thus, 
+									in this situation, we train GaPEN to predict aleatoric uncertainties.</p>
+
+								<p>Although we would like to use GaMPEN to predict aleatoric uncertainties, the covariance matrix,
+									 $\boldsymbol{\Sigma}$, is not known {\it a priori}. Instead, we train GaMPEN to learn these 
+									 values by minimizing the negative log-likelihood of the output parameters for the training set, 
+									 which can be written as
+									
+									 $$
+									 \begin{split}
+									- \log \mathcal{L}_{VI} \propto  \sum_{n} & \frac{1}{2}\left[\boldsymbol{Y}_{n}-\boldsymbol{\hat{\mu}}_{n}\right]^{\top} \boldsymbol{\hat{\Sigma_n}}^{-1}\left[\boldsymbol{Y}_{n}-\boldsymbol{\hat{\mu}}_{n}\right] \\ 
+									& + \frac{1}{2} \log [\operatorname{det}(\boldsymbol{\hat{\Sigma_n}})] + \lambda \sum_{i}\left\|\boldsymbol{\omega_{i}}\right\|^{2} .
+									\end{split}
+									$$
+
+									where $\boldsymbol{\hat{\mu}}_n$ and $\boldsymbol{\hat{\Sigma}}_n$ are the mean and covariance matrix of the multivariate 
+									Gaussian distribution predicted by GaMPEN for an image, $\boldsymbol{X}_n$. $\lambda$ is the strength of the regularization
+									term, and $\boldsymbol{\omega}_i$ are sampled from $q(\boldsymbol{\omega})$. <em>Note that the above function contains the 
+									inverse and determinant of the covariance matrix -- calculating can be numerically unstable. Refer to the GaMPEN paper on
+									how to navigate this. 
+									</em>	
+								</p>
+
+								<p>Thus to predict uncertainties:-
+
+								<ul>
+									<li>For every image, GaMPEN predicts the parameters of a multivariate Gaussian distribution
+										($\boldsymbol{\mu}$,$\boldsymbol{\Sigma}$). We then draw a sample from this distribution.</li>
+									<li>Now the network is slightly altered using Monte Carlo Dropout, and the above step is re-performed
+										with a slightly different estimate of ($\boldsymbol{\mu}$,$\boldsymbol{\Sigma}$).
+									</li>
+									<li>The last step is now repeated 1000 times for each galaxy</li>
+								</ul>
+								</p>
+
+								<p>The combination of the above two steps allows us to estimate robust uncertainties. By testing
+									GaMPEN on simulated Hyper Suprime-Cam galaxies, <em><b>we have verified that GaMPEN's predicted
+									posteriors are well-calibrated and accurate. ($\lesssim 5\%$ derivation).
+									</b></em>
 								</p>
 
 								<hr />
